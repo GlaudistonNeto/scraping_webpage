@@ -1,7 +1,7 @@
+import time
 import requests
 import selectorlib
 import smtplib, ssl
-import os
 
 URL = "https://programmer100.pythonanywhere.com/tours/"
 HEADERS = {
@@ -44,11 +44,13 @@ def read(extracted):
 
 
 if __name__ == "__main__":
-    scraped = scrape(URL)
-    extracted = extract(scraped)
-    print(extracted)
-    content = read(extracted)
-    if extracted != "No upcoming tours":
-        if not extracted in content:
-            store(extracted)
-            send_email(message="New event was found!")
+    while True:
+        scraped = scrape(URL)
+        extracted = extract(scraped)
+        print(extracted)
+        content = read(extracted)
+        if extracted != "No upcoming tours":
+            if not extracted in content:
+                store(extracted)
+                send_email(message="New event was found!")
+                time.sleep(2)
